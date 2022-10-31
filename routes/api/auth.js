@@ -5,8 +5,9 @@ const { ctrlWrapper } = require("../../helpers");
 const validateBody = require("../../middlewares/validateBody");
 const { userSchema } = require("../../models/users");
 const authenticate = require("../../middlewares/authenticate");
+const upload = require("../../middlewares/upload");
 
-router.post("/signup", validateBody(userSchema), ctrlWrapper(ctrl.register));
+router.post("/register", validateBody(userSchema), ctrlWrapper(ctrl.register));
 
 router.post("/login", validateBody(userSchema), ctrlWrapper(ctrl.login));
 
@@ -18,6 +19,13 @@ router.patch(
   "/:id/subscription",
   authenticate,
   ctrlWrapper(ctrl.updateSubscription)
+);
+
+router.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  ctrlWrapper(ctrl.updateAvatar)
 );
 
 module.exports = router;
