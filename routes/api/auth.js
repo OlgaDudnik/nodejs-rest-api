@@ -4,10 +4,19 @@ const ctrl = require("../../controllers/auth");
 const { ctrlWrapper } = require("../../helpers");
 const validateBody = require("../../middlewares/validateBody");
 const { userSchema } = require("../../models/users");
+const { verifyEmailSchema } = require("../../models/users");
 const authenticate = require("../../middlewares/authenticate");
 const upload = require("../../middlewares/upload");
 
 router.post("/register", validateBody(userSchema), ctrlWrapper(ctrl.register));
+
+router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verify));
+
+router.post(
+  "/verify",
+  validateBody(verifyEmailSchema),
+  ctrlWrapper(ctrl.resendVerify)
+);
 
 router.post("/login", validateBody(userSchema), ctrlWrapper(ctrl.login));
 
